@@ -14,7 +14,14 @@ use App\Controller\MeController;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     security: 'is_granted("ROLE_USER")',
-    collectionOperations: [
+    collectionOperations: [],
+    itemOperations: [
+        'get' => [
+            'controller' => NotFoundAction::class,
+            'openapi_context' => ['summary' => 'hidden'],
+            'read' => false,
+            'output' => false,
+        ],
         'me' => [
             'pagination_enabled' => false,
             'path' => '/me',
@@ -26,14 +33,6 @@ use App\Controller\MeController;
                     'cookieAuth' => [''],
                 ],
             ],
-        ],
-    ],
-    itemOperations: [
-        'get' => [
-            'controller' => NotFoundAction::class,
-            'openapi_context' => ['summary' => 'hidden'],
-            'read' => false,
-            'output' => false,
         ],
     ],
     normalizationContext: ['groups' => ['read:User']],
