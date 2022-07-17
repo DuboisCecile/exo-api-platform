@@ -12,6 +12,7 @@ class MeController
 
     public function __invoke()
     {
-        return $this->security->getUser();
+        $user = $this->security->getUser();
+        return $user;
     }
 }

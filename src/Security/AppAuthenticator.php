@@ -30,22 +30,22 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * Override to control what happens when the user hits a secure page
-     * but isn't logged in yet.
-     * 
-     * @return RedirectResponse|JsonResponse
-     */
-    public function start(Request $request, AuthenticationException $authException = null): Response
-    {
-        if (in_array('application/json', $request->getAcceptableContentTypes())) {
-            return new JsonResponse(null, Response::HTTP_UNAUTHORIZED);
-        }
+    // /**
+    //  * Override to control what happens when the user hits a secure page
+    //  * but isn't logged in yet.
+    //  * 
+    //  * @return RedirectResponse|JsonResponse
+    //  */
+    // public function start(Request $request, AuthenticationException $authException = null): Response
+    // {
+    //     if (in_array('application/json', $request->getAcceptableContentTypes())) {
+    //         return new JsonResponse(null, Response::HTTP_UNAUTHORIZED);
+    //     }
 
-        $url = $this->getLoginUrl($request);
+    //     $url = $this->getLoginUrl($request);
 
-        return new RedirectResponse($url);
-    }
+    //     return new RedirectResponse($url);
+    // }
 
 
     public function authenticate(Request $request): Passport

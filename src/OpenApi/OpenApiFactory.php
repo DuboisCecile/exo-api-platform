@@ -27,10 +27,15 @@ class OpenApiFactory implements OpenApiFactoryInterface
         // $openApi->getPaths()->addPath('/ping', new PathItem(null, 'Ping', null, new Operation('ping-id', [], [], 'Répond')));
 
         $schemas = $openApi->getComponents()->getSecuritySchemes();
-        $schemas['cookieAuth'] = new \ArrayObject([
-            'type' => 'apiKey',
-            'in' => 'cookie',
-            'name' => 'PHPSESSID',
+        // $schemas['cookieAuth'] = new \ArrayObject([
+        //     'type' => 'apiKey',
+        //     'in' => 'cookie',
+        //     'name' => 'PHPSESSID',
+        // ]);
+        $schemas['bearerAuth'] = new \ArrayObject([
+            'type' => 'http',
+            'scheme' => 'bearer',
+            'bearerFormat' => 'JWT',
         ]);
         // $openApi = $openApi->withSecurity(['cookieAuth' => ['']]);
 
@@ -48,6 +53,17 @@ class OpenApiFactory implements OpenApiFactoryInterface
                 ],
             ],
         ]);
+
+        $schemas['Token'] = new \ArrayObject([
+            'type' => 'object',
+            'properties' => [
+                'token' => [
+                    'type' => 'string',
+                    'readOnly' => true,
+                ],
+            ],
+        ]);
+
 
         $meOperation = $openApi->getPaths()->getPath('/api/me')->getGet()->withParameters([]);
         $mePathItem = $openApi->getPaths()->getPath('/api/me')->withGet($meOperation);
@@ -68,15 +84,25 @@ class OpenApiFactory implements OpenApiFactoryInterface
                 ),
                 responses: [
                     '200' => [
-                        'description' => 'Utilisateur connecté',
+                        'description' => 'Token JWT',
                         'content' => [
                             'application/json' => [
                                 'schema' => [
-                                    '$ref' => '#/components/schemas/User-read.User',
+                                    '$ref' => '#/components/schemas/Token',
                                 ],
                             ],
                         ],
                     ]
+                    // '200' => [
+                    //     'description' => 'Utilisateur connecté',
+                    //     'content' => [
+                    //         'application/json' => [
+                    //             'schema' => [
+                    //                 '$ref' => '#/components/schemas/User-read.User',
+                    //             ],
+                    //         ],
+                    //     ],
+                    // ]
                 ]
             )
         );
