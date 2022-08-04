@@ -12,6 +12,7 @@ security:
       entity:
         class: App\Entity\User
         property: email
+
     jwt:
       # lexik_jwt: ~
       lexik_jwt:
@@ -34,8 +35,12 @@ security:
     api:
       pattern: ^/api
       stateless: true
-      provider: jwt
+      # provider: jwt
+      provider: app_user_provider
+      entry_point: jwt
       jwt: ~
+      refresh_jwt:
+        check_path: /api/token/refresh # or, you may use the `api_refresh_token` route name
 
     # main:
     #   lazy: true
@@ -57,6 +62,7 @@ security:
   access_control:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/api/(login|token/refresh), roles: PUBLIC_ACCESS }
 
 when@test:
   security:
